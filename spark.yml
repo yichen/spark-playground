@@ -1,0 +1,37 @@
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    #
+    # install Java 8
+    #
+    - name: install oracale java 8
+      include: java8.yml
+
+    - file: path=/tmp/spark-1.6.1 state=directory
+
+    - name: download spark source code
+      get_url: url=http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1.tgz dest=/tmp/spark-1.6.1.tgz
+
+    - name: unarchive spark source code
+      unarchive: src=/tmp/spark-1.6.1.tgz dest=/tmp/ copy=no
+
+    - name: download and install scala
+      get_url: url=http://www.scala-lang.org/files/archive/scala-2.11.1.deb dest=/tmp/scala-2.11.1.deb
+    - command: dpkg -i /tmp/scala-2.11.1.deb
+    - apt: name=scala update_cache=yes
+
+    # - name: install sbt
+      # command: echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+    - apt_repository: repo='deb https://dl.bintray.com/sbt/debian /' state=present #filename='sbt'
+    - apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=642AC823
+    - apt: name=sbt update_cache=yes
+
+    - name: build spark
+      command: sbt assembly chdir=/tmp/spark-1.6.1
+
+    - name: clean up spark-1.6.1.tgz
+      file: path=/tmp/spark-1.6.1.tgz state=absent
+
+    - name: remove sbt.deb
+      file: path=/tmp/scala-2.11.1.deb state=absent
