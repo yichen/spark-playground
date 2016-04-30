@@ -22,10 +22,12 @@
     - apt: name=scala update_cache=yes
 
     # - name: install sbt
-      # command: echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
-    - apt_repository: repo='deb https://dl.bintray.com/sbt/debian /' state=present #filename='sbt'
-    - apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=642AC823
-    - apt: name=sbt update_cache=yes
+    - name: add sbt repo
+      apt_repository: repo='deb https://dl.bintray.com/sbt/debian /' state=present #filename='sbt'
+    - name: add apt key
+      apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=642AC823
+    - name: apt-get install sbt
+      apt: name=sbt update_cache=yes
 
     - name: build spark
       command: sbt assembly chdir=/tmp/spark-1.6.1
