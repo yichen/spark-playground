@@ -32,6 +32,12 @@
     - name: build spark
       command: sbt assembly chdir=/tmp/spark-1.6.1
 
+    - name: clean up /spark directory
+      file: path=/spark state=absent
+      
+    - name: move spark binaries to /spark directory
+      command: mv /tmp/spark-1.6.1 /spark
+
     - name: clean up spark-1.6.1.tgz
       file: path=/tmp/spark-1.6.1.tgz state=absent
 

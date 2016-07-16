@@ -21,6 +21,6 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provider "virtualbox" do |v|
-    v.memory = 2048
+    v.memory = 3072
   end
 end
