@@ -11,7 +11,7 @@ vagrant up
 
 This will set up a virtual machine with the following configurations:
 
-* Ubuntu 16.04 
+* Ubuntu 14.04 
 * Apache Spark 2.0.0
 * JDK 8
 * All spark ports are mapped to local ports on host machine
