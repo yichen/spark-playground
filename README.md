@@ -14,7 +14,7 @@ This will set up a virtual machine with the following configurations:
 * Ubuntu 16.04 
 * Apache Spark 2.0.0
 * JDK 8
-* Static IP address: 192.168.0.25, ports mapped to 8080 and 7077 for Spark
+* All spark ports are mapped to local ports on host machine
 
 The Spark is installed under path `/spark`
 
