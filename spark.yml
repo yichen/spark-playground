@@ -8,38 +8,23 @@
     - name: install oracale java 8
       include: java8.yml
 
-    - file: path=/tmp/spark-2.0.0 state=directory
-
-    - name: download spark source code
-      get_url: url=http://d3kbcqa49mib13.cloudfront.net/spark-2.0.0.tgz dest=/tmp/spark-2.0.0.tgz
+    - name: download spark 2.0.0 on Hadoop
+      get_url: url=http://d3kbcqa49mib13.cloudfront.net/spark-2.0.0-bin-hadoop2.7.tgz dest=/tmp/spark-2.0.0-bin-hadoop2.7.tgz
 
     - name: unarchive spark source code
-      unarchive: src=/tmp/spark-2.0.0.tgz dest=/tmp/ copy=no
-
-    - name: download and install scala
-      get_url: url=http://www.scala-lang.org/files/archive/scala-2.11.1.deb dest=/tmp/scala-2.11.1.deb
-    - command: dpkg -i /tmp/scala-2.11.1.deb
-    - apt: name=scala update_cache=yes
-
-    # - name: install sbt
-    - name: add sbt repo
-      apt_repository: repo='deb https://dl.bintray.com/sbt/debian /' state=present #filename='sbt'
-    - name: add apt key
-      apt_key: keyserver=hkp://keyserver.ubuntu.com:80 id=642AC823
-    - name: apt-get install sbt
-      apt: name=sbt update_cache=yes
-
-    - name: build spark
-      command: sbt assembly chdir=/tmp/spark-2.0.0
+      unarchive: src=/tmp/spark-2.0.0-bin-hadoop2.7.tgz dest=/tmp/ copy=no
 
     - name: clean up /spark directory
       file: path=/spark state=absent
       
     - name: move spark binaries to /spark directory
-      command: mv /tmp/spark-2.0.0 /spark
+      command: mv /tmp/spark-2.0.0-bin-hadoop2.7 /spark
 
     - name: clean up spark-2.0.0.tgz
-      file: path=/tmp/spark-2.0.0.tgz state=absent
+      file: path=/tmp/spark-2.0.0-bin-hadoop2.7 state=absent
 
-    - name: remove sbt.deb
-      file: path=/tmp/scala-2.11.1.deb state=absent
+    - name: create spark/logs path
+      file: path=/spark/logs state=directory mode=0777
+
+    - name: create spark/work directory
+      file: path=/spark/work state=directory mode=0777
