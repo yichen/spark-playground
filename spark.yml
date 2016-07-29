@@ -8,13 +8,13 @@
     - name: install oracale java 8
       include: java8.yml
 
-    - file: path=/tmp/spark-1.6.1 state=directory
+    - file: path=/tmp/spark-2.0.0 state=directory
 
     - name: download spark source code
-      get_url: url=http://d3kbcqa49mib13.cloudfront.net/spark-1.6.1.tgz dest=/tmp/spark-1.6.1.tgz
+      get_url: url=http://d3kbcqa49mib13.cloudfront.net/spark-2.0.0.tgz dest=/tmp/spark-2.0.0.tgz
 
     - name: unarchive spark source code
-      unarchive: src=/tmp/spark-1.6.1.tgz dest=/tmp/ copy=no
+      unarchive: src=/tmp/spark-2.0.0.tgz dest=/tmp/ copy=no
 
     - name: download and install scala
       get_url: url=http://www.scala-lang.org/files/archive/scala-2.11.1.deb dest=/tmp/scala-2.11.1.deb
@@ -30,16 +30,16 @@
       apt: name=sbt update_cache=yes
 
     - name: build spark
-      command: sbt assembly chdir=/tmp/spark-1.6.1
+      command: sbt assembly chdir=/tmp/spark-2.0.0
 
     - name: clean up /spark directory
       file: path=/spark state=absent
       
     - name: move spark binaries to /spark directory
-      command: mv /tmp/spark-1.6.1 /spark
+      command: mv /tmp/spark-2.0.0 /spark
 
-    - name: clean up spark-1.6.1.tgz
-      file: path=/tmp/spark-1.6.1.tgz state=absent
+    - name: clean up spark-2.0.0.tgz
+      file: path=/tmp/spark-2.0.0.tgz state=absent
 
     - name: remove sbt.deb
       file: path=/tmp/scala-2.11.1.deb state=absent
