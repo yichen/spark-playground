@@ -20,12 +20,12 @@ The Spark is installed under path `/spark`
 
 ## Start Spark
 
-# Login to the virtual machine:
+* Login to the virtual machine:
 ```
 vagrant ssh
 ```
 
-# Start Spark cluster
+* Start Spark cluster
 ```
 /spark/sbin/start-all.sh
 ```
